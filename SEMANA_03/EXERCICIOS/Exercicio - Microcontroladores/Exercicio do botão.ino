@@ -1,8 +1,8 @@
-//definindo os 
-int LED1 = 19;
-int LED2 = 14;
-int LED3 = 21;
-int LED4 = 13;
+//definindo os  
+int LEDred = 19;
+int LEDgreen = 21;
+int LEDblue = 14;
+int LEDyellow = 13;
 int botao1 = 48;
 int botao2 = 40;
 int buzzerPin = 11;
@@ -15,10 +15,10 @@ int normalizacaoDoValor;
 
 void setup() {
   //setup dos leds
-  pinMode(LED1, OUTPUT);
-  pinMode(LED2, OUTPUT);
-  pinMode(LED3, OUTPUT);
-  pinMode(LED4, OUTPUT);
+  pinMode(LEDred, OUTPUT);
+  pinMode(LEDgreen, OUTPUT);
+  pinMode(LEDblue, OUTPUT);
+  pinMode(LEDyellow, OUTPUT);
   //setup do buzzer
   pinMode(buzzerPin, OUTPUT);
   //setup dos botoes
@@ -30,8 +30,9 @@ void setup() {
   Serial.begin(9600);
 }
 
+
 //função que converte o numero decimal para o binario
-void converte_binario(int valor){
+void transformaBinario(int valor){
   int i = 0;
   while (i != 4)
   {
@@ -41,7 +42,7 @@ void converte_binario(int valor){
   }
 }
 //separa o valor lido no ldr em intervalos, para termos apenas 15
-int normalizacao(int atualValor)
+int transformaValor(int atualValor)
 {
   int novoValor = (atualValor * 15) / 2670;
 
@@ -58,7 +59,7 @@ void tom(char buzzerPin, int freq, int tempo){
   }
 }
 //um tom para cada numero
-void musicaBinaria(int valorSensor) {
+void musica(int valorSensor) {
 
   switch(valorSensor) {
     case 1:
@@ -140,15 +141,15 @@ void loop() {
     {
       Serial.println("gravado");
       int ldrValue = analogRead(Ldr);
-      normalizacaoDoValor = normalizacao(ldrValue);
+      normalizacaoDoValor = transformaValor(ldrValue);
 
       numeros[x] = normalizacaoDoValor;
 
       x += 1;
 
-      converte_binario(normalizacaoDoValor);
+      transformaBinario(normalizacaoDoValor);
 
-      musicaBinaria(normalizacaoDoValor);
+      musica(normalizacaoDoValor);
 
       acendeLed();
     }
@@ -173,8 +174,8 @@ void rodar()
 {
   for (int i = 0; i < sizeof(numeros)/4; i ++)
   {
-    musicaBinaria(numeros[i]);
-    converte_binario(numeros[i]);
+    musica(numeros[i]);
+    transformaBinario(numeros[i]);
     acendeLed();
   }
   x = 0;
